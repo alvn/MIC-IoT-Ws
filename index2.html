@@ -118,6 +118,11 @@
       });
 
       //Relay
+      $('#servo').on("change", function(){
+          robot.emit('servo_move', $('#servo').val());
+      });
+
+      //Servo
       $('#button-Relay').on("click", function(){
 
         if ( $(this).hasClass("status-off") ) {
@@ -134,7 +139,6 @@
         }
 
       });
-
       //Status Checks
 
 
@@ -159,6 +163,8 @@
       <li id="status-Temp">Temp Reading:</li>
       <li id="status-Light">Light Reading:</li>
     </ul>
+
+    <input id="servo" type="range"  min="0" max="135" />
 
   </body>
 </html>
