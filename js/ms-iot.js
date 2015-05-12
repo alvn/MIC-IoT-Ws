@@ -1,18 +1,4 @@
-<!doctype html>
-<html>
-  <meta charset="utf-8">
-  <head>
-    <title>MIC IoT</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 26px Helvetica, Arial; text-align:center; line-height:32px;}
-    </style>
-  </head>
-  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-  <script type="text/javascript">
-    
-    //Global Vars
+ //Global Vars
     var device;
 
     //Global Input Vars
@@ -280,36 +266,3 @@
       });
 
     };
-  </script>
-  <body>
-    <ul id="outputs">
-      <li><a href="#" id="button-LED" class="status-off">Turn LED On</a></li>
-      <li><input id="level-LED" type="range"  min="0" max="255" /></li>
-      <li><a href="#" id="button-Buzzer" class="status-off">Turn Buzzer On</a></li>
-      <li><input id="level-Buzzer"type="range"  min="0" max="255" /></li>
-      <li><a href="#" id="button-Relay" class="status-off">Turn Relay On</a></li>
-    </ul>
-
-    <ul id="status">
-      <li id="status-Button">I AM:</li>
-      <li id="status-Touch">I AM:</li>
-      <li id="status-Rotary">Rotary Reading:</li>
-      <li id="status-Sound">Sound Reading:</li>
-      <li id="status-Temp">Temp Reading:</li>
-      <li id="status-Light">Light Reading:</li>
-    </ul>
-
-    <h3 id="current-Text">Current Text</h3>
-    <form action="">
-      <input id="screen" autocomplete="off" /><button>Send</button>
-    </form>
-
-    <ul>
-      <li>R: <input id="screen-Red" type="range"  min="0" max="255" /></li>
-      <li>G: <input id="screen-Green" type="range"  min="0" max="255" /></li>
-      <li>B: <input id="screen-Blue" type="range"  min="0" max="255" /></li>
-      <li><a href="#" id="button-Backlight" class="status-on">Turn Screen Off</a></li>
-    </ul>
-
-  </body>
-</html>
