@@ -8,7 +8,7 @@ Cylon.robot({
     
   // This is how we define custom events that will be registered
   // by the API.
-  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading'],
+  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'buzzer_is_on', 'buzzer_is_off', 'relay_is_on', 'relay_is_off', 'servo_angle'],
     
   // These are the commands that will be availble in the API
   // Commands method needs to return an object with the aliases
@@ -21,6 +21,7 @@ Cylon.robot({
       buzzer_off: this.buzzerOff,
       relay_on: this.relayOn,
       relay_off: this.relayOff,
+      servo_move: this.servoMove,
       check_status: this.checkStatus
     };
   },
@@ -30,7 +31,8 @@ Cylon.robot({
   },
 
   devices: {
-    relay: { driver: 'motor', pin: 3 },
+    relay: { driver: 'motor', pin: 2 },
+    servo: { driver: 'servo', pin: 3 },
     led: { driver: 'led', pin: 5 },
     buzzer: { driver: 'motor', pin: 6 },
     button: { driver: 'button', pin: 7 },
@@ -155,6 +157,13 @@ Cylon.robot({
  relayOff: function() {
      this.relay.turnOff();
      this.emit('relay_is_off');
+ },
+    
+ servoMove: function(angle) {
+     if (angle >= 0 && angle <= 135 ) {
+        this.servo.angle(angle);
+        this.emit('servo_angle', servo.angle);
+    }
  },
     
  //Button Functions
