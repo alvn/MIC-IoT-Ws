@@ -30,7 +30,6 @@
       //Button Press
       robot.on('button_down', function(){
         $('#status-Button').html('I Am ON');
-        console.log('The robot just turned ON its led!!!');
       });
 
       robot.on('button_up', function(){
@@ -79,7 +78,47 @@
         //console.log('ROTATE!!!');
       });
 
-      //Outputs
+      //LED Update
+      robot.on('led_is_on', function(){
+          $('#button-LED').html('Turn LED Off');
+          $('#button-LED').addClass('status-on');
+          $('#button-LED').removeClass('status-off');
+      });
+
+      robot.on('led_is_off', function(){
+          $('#button-LED').html('Turn LED On');
+          $('#button-LED').addClass('status-off');
+          $('#button-LED').removeClass('status-on');
+      });
+
+      //Relay Update
+      robot.on('relay_is_on', function(){
+          $('#button-Relay').html('Turn Relay Off');
+          $('#button-Relay').addClass('status-on');
+          $('#button-Relay').removeClass('status-off');
+      });
+
+      robot.on('relay_is_off', function(){
+          $('#button-Relay').html('Turn Relay On');
+          $('#button-Relay').addClass('status-on');
+          $('#button-Relay').removeClass('status-off');
+      });
+
+      //Buzzer Update
+      robot.on('buzzer_is_on', function(){
+          $('#button-Buzzer').html('Turn Buzzer Off');
+          $('#button-Buzzer').addClass('status-on');
+          $('#button-Buzzer').removeClass('status-off');
+      });
+
+      robot.on('buzzer_is_off', function(){
+          $('#button-Buzzer').html('Turn Buzzer On');
+          $('#button-Buzzer').addClass('status-on');
+          $('#button-Buzzer').removeClass('status-off');
+      });
+
+
+      //OUTPUTS
 
       //LED
       $('#button-LED').on("click", function(){
