@@ -8,7 +8,7 @@ Cylon.robot({
     
   // This is how we define custom events that will be registered
   // by the API.
-  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'buzzer_is_on', 'buzzer_is_off', 'relay_is_on', 'relay_is_off', 'servo_angle'],
+  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'servo_angle'],
     
   // These are the commands that will be availble in the API
   // Commands method needs to return an object with the aliases
@@ -17,12 +17,18 @@ Cylon.robot({
     return {
       led_on: this.ledOn,
       led_off: this.ledOff,
+      led_brightness: this.ledBrightness,
       buzzer_on: this.buzzerOn,
       buzzer_off: this.buzzerOff,
+      buzzer_level: this.buzzerLevel,
       relay_on: this.relayOn,
       relay_off: this.relayOff,
+      screen_write: this.screenWrite,
+      screen_line: this.screenLine,
+      screen_clear: this.screenClear,
+      screen_rgb: this.screenRGB,
       servo_move: this.servoMove,
-      check_status: this.checkStatus
+      status_check: this.statusCheck
     };
   },
 
@@ -31,6 +37,7 @@ Cylon.robot({
   },
 
   devices: {
+    screen: {driver:'upm-jhd1313m1'},
     relay: { driver: 'motor', pin: 2 },
     servo: { driver: 'servo', pin: 3 },
     led: { driver: 'led', pin: 5 },
@@ -40,17 +47,13 @@ Cylon.robot({
     rotary: { driver: 'analog-sensor', pin: 0, lowerLimit: 0, upperLimit: 1024 },
     sound: { driver: 'analog-sensor', pin: 1, lowerLimit: 0, upperLimit: 1024 },
     temp: { driver: 'analog-sensor', pin: 2, lowerLimit: 0, upperLimit: 1024 },
-    light: { driver: 'analog-sensor', pin: 3, lowerLimit:200, upperLimit: 800 }
+    light: { driver: 'analog-sensor', pin: 3, lowerLimit:0, upperLimit: 1024 }
 
   },
 
   work: function() {
     // Add your robot code here,
-    // for this example with socket.io
-    // we are going to be interacting
-    // with the robot using the code in
-    // the client side.
-    
+          
     //buttons
     this.button.on('push', function() {
       console.log('detected press');
@@ -72,10 +75,11 @@ Cylon.robot({
       this.emit('touch_up');
     }.bind(this));
       
-    /*//Servo
-    this.on('servo_move', function(angle) {
-       this.servo.angle(angle);
-    }.bind(this));*/
+    //Servo
+    var servoAngle = 0;
+    this.servo.on('angle', function(angle) {
+       this.emit('servo_angle', this.servo.currentAngle);
+    }.bind(this));
       
     //ANALOG INPUTS
       
@@ -131,7 +135,9 @@ Cylon.robot({
       
   },
   
-  //COMMAND FUNCTIONS
+  //COMMAND METHODS
+ 
+ //Led Methods
   ledOn: function() {
     this.led.turnOn();
     this.emit('led_is_on');
@@ -141,8 +147,14 @@ Cylon.robot({
     this.led.turnOff();
     this.emit('led_is_off');
   },
+ 
+  ledBrightness: function(level) {
+    var level = Number(level);
+    this.led.brightness(level);
+    this.emit('led_current_brightness', this.led.currentBrightness());
+  },
     
- //Buzzer Functions
+ //Buzzer Methods
  buzzerOn: function() {
      this.buzzer.turnOn();
      this.emit('buzzer_is_on');
@@ -152,8 +164,13 @@ Cylon.robot({
      this.buzzer.turnOff();
      this.emit('buzzer_is_off');
  },
+ 
+ buzzerLevel: function(level) {
+     this.buzzer.speed(level);
+     this.emit('buzzer_current_level', this.buzzer.currentSpeed());
+ },
     
- //Relay Funcions
+ //Relay Methods
  relayOn: function() {
      this.relay.turnOn();
      this.emit('relay_is_on');
@@ -163,19 +180,74 @@ Cylon.robot({
      this.relay.turnOff();
      this.emit('relay_is_off');
  },
+
+ //Screen Methods    
+ screenWrite: function(msg) {
+  this.screen.setCursor(0,0);
+  this.screen.write(msg);
+ },
+
+ screenLine: function(line) {
+  this.screen.setCursor(line,0);
+ },
     
- servoMove: function(angle) {
+ screenScroll: function() {
+  this.screen.scroll(true);
+ },    
+    
+ screenClear: function() {
+  this.screen.clear();
+ },
+
+ screenRGB: function() {
+  this.screen.setColor(200,120,20);
+ },
+ 
+ //Servo Method
+ servoMove: function() {
      //if (angle >= 0 && angle <= 135 ) {
-        //this.servo.angle(angle);
+     var angle = 100;   
+     this.servo.angle(angle);
         //this.emit('servo_angle', servo.angle);
     //}
  },
-    
- //Button Functions
-  checkStatus: function() {
-    this.button.isPressed();
-    return;
+
+//Status Check on Connection
+ statusCheck: function() {
+     //led status
+      if (this.led.isOn()) {
+          this.emit('led_is_on');
+      } else {
+          this.emit('led_is_off');
+      }
+      
+      this.emit('led_current_brightness', this.led.currentBrightness());
+      
+     //buzzer status
+      if (this.buzzer.isOn) {
+          this.emit('buzzer_is_on');
+      } else {
+          this.emit('buzzer_is_off');
+      }
+      
+      this.emit('buzzer_current_level', this.buzzer.currentSpeed());
+     
+     //Button status
+      if (this.button.isPressed()) {
+          this.emit('button_down');
+      } else {
+          this.emit('button_up');
+      }
+     
+     //Touch status
+      if (this.button.isPressed()) {
+          this.emit('touch_down');
+      } else {
+          this.emit('touch_up');
+      }
+      
   }
+    
 });
 
 // We setup the api specifying `socketio`

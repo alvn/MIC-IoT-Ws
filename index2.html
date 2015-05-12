@@ -15,15 +15,11 @@
 
     window.onload = function() {
       // We connect to the device defined in the robot
-      ///LED = io('http://192.168.1.23:3000/api/robots/peanut-bot/devices/led');
       robot = io('http://burrito.local:3000/api/robots/peanut-bot');
-      //sensor = io('http://192.168.1.176:3000/api/robots/peanut-bot/devices/sensor');
+      //servo = io('http://192.168.1.176:3000/api/robots/peanut-bot/devices/sensor');
 
       //set initial status
-      robot.emit('led_off');
-      robot.emit('buzzer_off');
-      robot.emit('relay_off');
-
+      robot.emit('status_check');
 
       //EVENT LISTENERS
 
@@ -54,11 +50,6 @@
         //console.log('ROTATE!!!');
       });
 
-      //Rotary Sensor
-      robot.on('rotary_reading', function(data){
-        $('#status-Rotary').html($('<li>').text(data));
-        //console.log('ROTATE!!!');
-      });
 
       //Sound Sensor
       robot.on('sound_reading', function(data){
@@ -75,8 +66,8 @@
       //Light Sensor
       robot.on('light_reading', function(data){
         $('#status-Light').html($('<li>').text(data));
-        //console.log('ROTATE!!!');
       });
+
 
       //LED Update
       robot.on('led_is_on', function(){
@@ -89,6 +80,10 @@
           $('#button-LED').html('Turn LED On');
           $('#button-LED').addClass('status-off');
           $('#button-LED').removeClass('status-on');
+      });
+
+      robot.on('led_current_brightness', function(level){
+          $('#level-LED').val(level);
       });
 
       //Relay Update
@@ -117,43 +112,70 @@
           $('#button-Buzzer').removeClass('status-on');
       });
 
+      robot.on('buzzer_current_level', function(level){
+          $('#level-Buzzer').val(level);
+      });
+
 
       //OUTPUTS
 
       //LED
       $('#button-LED').on("click", function(){
 
+      var currentBrightness = Number($('#level-LED').val());
+
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn LED Off');
           $(this).addClass('status-on');
           $(this).removeClass('status-off');
           robot.emit('led_on');
+          robot.emit('led_brightness', currentBrightness);
         }
         else {
           $(this).html('Turn LED On');
           $(this).addClass('status-off');
           $(this).removeClass('status-on');
           robot.emit('led_off');
+          robot.emit('led_brightness', Number(0));
         }
 
       });
 
+      //set led brightness level
+      $('#level-LED').on("change", function() {
+        if ( $('#button-LED').hasClass("status-on") ) {
+          robot.emit('led_brightness', Number($('#level-LED').val()));
+        }
+      });
+
       //Buzzer
       $('#button-Buzzer').on("click", function(){
+        
+        var currentlevel = Number($('#level-Buzzer').val());
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn Buzzer Off');
           $(this).addClass('status-on');
           $(this).removeClass('status-off');
           robot.emit('buzzer_on');
+          robot.emit('buzzer_level', currentlevel);
         }
         else {
           $(this).html('Turn Buzzer On');
           $(this).addClass('status-off');
           $(this).removeClass('status-on');
           robot.emit('buzzer_off');
+          robot.emit('buzzer_level', Number(0));
+
         }
 
+      });
+
+      //set buzzer level
+      $('#level-Buzzer').on("change", function() {
+        if ( $('#button-LED').hasClass("status-on") ) {
+          robot.emit('buzzer_level', Number($('#level-Buzzer').val()));
+        }
       });
 
       //Relay
@@ -180,8 +202,13 @@
           robot.emit('servo_move', $('#servo').val());
       });
 
-      
-      //Status Checks
+
+      //LCD
+      $('form').submit(function(){
+        robot.emit('screen_clear');
+        robot.emit('screen_write', $('#screen').val());
+      $('#screen').val('');
+      });
 
 
 
@@ -190,14 +217,13 @@
   <body>
     <ul id="outputs">
       <li><a href="#" id="button-LED" class="status-off">Turn LED On</a></li>
+      <li><input id="level-LED" type="range"  min="0" max="255" /></li>
       <li><a href="#" id="button-Buzzer" class="status-off">Turn Buzzer On</a></li>
+      <li><input id="level-Buzzer"type="range"  min="0" max="255" /></li>
       <li><a href="#" id="button-Relay" class="status-off">Turn Relay On</a></li>
     </ul>
 
     <ul id="status">
-      <li id="status-LED" class="status-off">LED is On</li>
-      <li id="status-Buzzer" class="status-off">Buzzer is On</li>
-      <li id="status-Relay" class="status-off">Relay is On</li>
       <li id="status-Button">I AM:</li>
       <li id="status-Touch">I AM:</li>
       <li id="status-Rotary">Rotary Reading:</li>
@@ -206,7 +232,9 @@
       <li id="status-Light">Light Reading:</li>
     </ul>
 
-    <input id="servo" type="range"  min="0" max="135" />
+    <form action="">
+      <input id="screen" autocomplete="off" /><button>Send</button>
+    </form>
 
   </body>
 </html>
