@@ -8,7 +8,7 @@ Cylon.robot({
     
   // This is how we define custom events that will be registered
   // by the API.
-  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading'],
+  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading'],
     
   // These are the commands that will be availble in the API
   // Commands method needs to return an object with the aliases
@@ -38,7 +38,7 @@ Cylon.robot({
     rotary: { driver: 'analog-sensor', pin: 0, lowerLimit: 0, upperLimit: 1024 },
     sound: { driver: 'analog-sensor', pin: 1, lowerLimit: 0, upperLimit: 1024 },
     temp: { driver: 'analog-sensor', pin: 2, lowerLimit: 0, upperLimit: 1024 },
-    light: { driver: 'analog-sensor', pin: 3, lowerLimit: 0, upperLimit: 1024 }
+    light: { driver: 'analog-sensor', pin: 3, lowerLimit:200, upperLimit: 800 }
 
   },
 
@@ -90,26 +90,41 @@ Cylon.robot({
     var soundVal = 0;
      this.sound.on('analogRead', function(data) {
       soundVal = data;
-      //console.log("Reading: " + soundVal);
-     });
-      
+        
+      soundVal = soundVal.toFixed(0).toString();
+        
+      this.emit('sound_reading', soundVal); 
+     }.bind(this));
+    
+              
     //temp
     var tempVal = 0;
-     this.temp.on('analogRead', function(data) {
-      rotaryVal = data;
-      //console.log("Reading: " + tempVal);
-     });
-      
+    var resistance = 0;
+    var temperature = 0;
+    var B = 3975;                  //B value of the thermistor
+    this.temp.on('analogRead', function(data) {
+      tempVal = data;
+      resistance=(1023-tempVal)*10000/tempVal; //get the resistance of the sensor;
+      tempVal=1/(Math.log(resistance/10000)/B+1/298.15)-273.15;//convert to temperature via datasheet ;
+      tempVal = tempVal.toFixed(0).toString();
+
+      this.emit('temp_reading', tempVal);
+     }.bind(this));
+    
+
     //light
     var lightVal = 0;
      this.light.on('analogRead', function(data) {
       lightVal = data;
-      //console.log("Reading: " + lightVal);
-     });
+    
+      lightVal = lightVal.toFixed(0).toString();
+        
+      this.emit('light_reading', lightVal);
+     }.bind(this));
       
   },
   
-  //LED Functions
+  //COMMAND FUNCTIONS
   ledOn: function() {
     this.led.turnOn();
     this.emit('led_is_on');

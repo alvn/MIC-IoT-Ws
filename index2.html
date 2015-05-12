@@ -39,7 +39,6 @@
       });
 
       //Touch Sensor Press
-
       robot.on('touch_down', function(){
         $('#status-Touch').html('I Am Touched');
         console.log('The robot just turned ON its led!!!');
@@ -53,6 +52,30 @@
       //Rotary Sensor
       robot.on('rotary_reading', function(data){
         $('#status-Rotary').html($('<li>').text(data));
+        //console.log('ROTATE!!!');
+      });
+
+      //Rotary Sensor
+      robot.on('rotary_reading', function(data){
+        $('#status-Rotary').html($('<li>').text(data));
+        //console.log('ROTATE!!!');
+      });
+
+      //Sound Sensor
+      robot.on('sound_reading', function(data){
+        $('#status-Sound').html($('<li>').text(data));
+        //console.log('ROTATE!!!');
+      });
+
+      //Temp Sensor
+      robot.on('temp_reading', function(data){
+        $('#status-Temp').html($('<li>').text(data));
+        //console.log('ROTATE!!!');
+      });
+
+      //Light Sensor
+      robot.on('light_reading', function(data){
+        $('#status-Light').html($('<li>').text(data));
         //console.log('ROTATE!!!');
       });
 
@@ -132,6 +155,9 @@
       <li id="status-Button">I AM:</li>
       <li id="status-Touch">I AM:</li>
       <li id="status-Rotary">Rotary Reading:</li>
+      <li id="status-Sound">Sound Reading:</li>
+      <li id="status-Temp">Temp Reading:</li>
+      <li id="status-Light">Light Reading:</li>
     </ul>
 
   </body>
