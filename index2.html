@@ -116,6 +116,11 @@
           $('#level-Buzzer').val(level);
       });
 
+      //LCD Update
+      robot.on('current_text', function(msg){
+          $('#current-Text').html(msg);
+      });
+
 
       //OUTPUTS
 
@@ -232,6 +237,7 @@
       <li id="status-Light">Light Reading:</li>
     </ul>
 
+    <h3 id="current-Text">Current Text</h3>
     <form action="">
       <input id="screen" autocomplete="off" /><button>Send</button>
     </form>

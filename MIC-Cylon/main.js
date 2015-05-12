@@ -3,12 +3,15 @@
 // We require cylon and define our robot as usual
 var Cylon = require('cylon');
 
+//LCD Current Text
+var currentText = '';     //defining as global var here.
+
 Cylon.robot({
   name: 'peanut-bot',
     
   // This is how we define custom events that will be registered
   // by the API.
-  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'servo_angle'],
+  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'current_text'],
     
   // These are the commands that will be availble in the API
   // Commands method needs to return an object with the aliases
@@ -181,10 +184,12 @@ Cylon.robot({
      this.emit('relay_is_off');
  },
 
- //Screen Methods    
+ //Screen Methods
  screenWrite: function(msg) {
   this.screen.setCursor(0,0);
   this.screen.write(msg);
+  this.emit('current_text', msg);
+  currentText = msg;
  },
 
  screenLine: function(line) {
@@ -245,7 +250,10 @@ Cylon.robot({
       } else {
           this.emit('touch_up');
       }
-      
+     
+     //LCD Text Update
+      this.emit('current_text', currentText);
+
   }
     
 });
