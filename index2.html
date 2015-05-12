@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <title>MIC IoT</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 26px Helvetica, Arial; text-align:center; line-height:32px;}
+    </style>
+  </head>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script type="text/javascript">
+    var device;
+
+    window.onload = function() {
+      // We connect to the device defined in the robot
+      ///LED = io('http://192.168.1.23:3000/api/robots/peanut-bot/devices/led');
+      robot = io('http://burrito.local:3000/api/robots/peanut-bot');
+      //sensor = io('http://192.168.1.176:3000/api/robots/peanut-bot/devices/sensor');
+
+      //set initial status
+      robot.emit('led_off');
+      robot.emit('buzzer_off');
+      robot.emit('relay_off');
+
+
+      //EVENT LISTENERS
+
+      //Button Press
+      robot.on('button_down', function(){
+        $('#status-Button').html('I Am ON');
+        console.log('The robot just turned ON its led!!!');
+      });
+
+      robot.on('button_up', function(){
+        $('#status-Button').html('I Am OFF');
+        console.log('The robot just turned ON its led!!!');
+      });
+
+      //Touch Sensor Press
+
+      robot.on('touch_down', function(){
+        $('#status-Touch').html('I Am Touched');
+        console.log('The robot just turned ON its led!!!');
+      });
+
+      robot.on('touch_up', function(){
+        $('#status-Touch').html('I Am NOT Touched');
+        console.log('The robot just turned ON its led!!!');
+      });
+
+      //Rotary Sensor
+      robot.on('rotary_reading', function(data){
+        $('#status-Rotary').html($('<li>').text(data));
+        //console.log('ROTATE!!!');
+      });
+
+      //Outputs
+
+      //LED
+      $('#button-LED').on("click", function(){
+
+        if ( $(this).hasClass("status-off") ) {
+          $(this).html('Turn LED Off');
+          $(this).addClass('status-on');
+          $(this).removeClass('status-off');
+          robot.emit('led_on');
+        }
+        else {
+          $(this).html('Turn LED On');
+          $(this).addClass('status-off');
+          $(this).removeClass('status-on');
+          robot.emit('led_off');
+        }
+
+      });
+
+      //Buzzer
+      $('#button-Buzzer').on("click", function(){
+
+        if ( $(this).hasClass("status-off") ) {
+          $(this).html('Turn Buzzer Off');
+          $(this).addClass('status-on');
+          $(this).removeClass('status-off');
+          robot.emit('buzzer_on');
+        }
+        else {
+          $(this).html('Turn Buzzer On');
+          $(this).addClass('status-off');
+          $(this).removeClass('status-on');
+          robot.emit('buzzer_off');
+        }
+
+      });
+
+      //Relay
+      $('#button-Relay').on("click", function(){
+
+        if ( $(this).hasClass("status-off") ) {
+          $(this).html('Turn Relay Off');
+          $(this).addClass('status-on');
+          $(this).removeClass('status-off');
+          robot.emit('relay_on');
+        }
+        else {
+          $(this).html('Turn Relay On');
+          $(this).addClass('status-off');
+          $(this).removeClass('status-on');
+          robot.emit('relay_off');
+        }
+
+      });
+
+      //Status Checks
+
+
+
+    };
+  </script>
+  <body>
+    <ul id="outputs">
+      <li><a href="#" id="button-LED" class="status-off">Turn LED On</a></li>
+      <li><a href="#" id="button-Buzzer" class="status-off">Turn Buzzer On</a></li>
+      <li><a href="#" id="button-Relay" class="status-off">Turn Relay On</a></li>
+    </ul>
+
+    <ul id="status">
+      <li id="status-LED" class="status-off">LED is On</li>
+      <li id="status-Buzzer" class="status-off">Buzzer is On</li>
+      <li id="status-Relay" class="status-off">Relay is On</li>
+      <li id="status-Button">I AM:</li>
+      <li id="status-Touch">I AM:</li>
+      <li id="status-Rotary">Rotary Reading:</li>
+    </ul>
+
+  </body>
+</html>
