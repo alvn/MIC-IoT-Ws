@@ -3,15 +3,17 @@
 // We require cylon and define our robot as usual
 var Cylon = require('cylon');
 
-//LCD Current Text
+//LCD Current Text and Backlight
 var currentText = '';     //defining as global var here.
+var backlightStatus = true; 
+var lcd_rgb = {red:255, green: 255, blue: 255};
 
 Cylon.robot({
   name: 'peanut-bot',
     
   // This is how we define custom events that will be registered
   // by the API.
-  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'current_text'],
+  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'current_text', 'screen_power', 'screen_rgb'],
     
   // These are the commands that will be availble in the API
   // Commands method needs to return an object with the aliases
@@ -30,6 +32,8 @@ Cylon.robot({
       screen_line: this.screenLine,
       screen_clear: this.screenClear,
       screen_rgb: this.screenRGB,
+      backlight_off: this.backlightOff,
+      backlight_on: this.backlightOn,
       servo_move: this.servoMove,
       status_check: this.statusCheck
     };
@@ -204,8 +208,22 @@ Cylon.robot({
   this.screen.clear();
  },
 
- screenRGB: function() {
-  this.screen.setColor(200,120,20);
+ screenRGB: function(rgb) {
+  this.screen.setColor(rgb.red, rgb.green, rgb.blue);
+  lcd_rgb = rgb;
+  this.emit('screen_rgb', lcd_rgb);
+ },
+    
+ backlightOff: function() {
+  this.screen.setColor(0,0,0);
+  this.emit('backlight_off');
+  backlightStatus = false;
+ },
+
+ backlightOn: function() {
+  this.screen.setColor(lcd_rgb.red, lcd_rgb.green, lcd_rgb.blue);
+  this.emit('backlight_on');
+  backlightStatus = true;
  },
  
  //Servo Method
@@ -253,7 +271,17 @@ Cylon.robot({
      
      //LCD Text Update
       this.emit('current_text', currentText);
-
+     
+     //LCD Backlight Status
+      if (backlightStatus == true) {
+          this.emit('backlight_on');
+      } else {
+          this.emit('backlight_off');
+      }
+     
+     //LCD Color Update
+      this.emit('screen_rgb', lcd_rgb);
+     
   }
     
 });

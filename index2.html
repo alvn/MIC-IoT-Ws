@@ -11,7 +11,27 @@
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script type="text/javascript">
+    
+    //Global Vars
     var device;
+
+    //Global Input Vars
+    var button = false;
+    var touch = false;
+    var relay = false;
+    var rotary = 0;
+    var temp = 0;
+    var light = 0;
+    var sound = 0;
+
+    //Global Output Vars
+    var led = false;
+    var led_brightness = 0;
+    var buzzer = false;
+    var buzzer_level = 0;
+    var lcd = false;
+    var lcd_text = '';
+    var lcd_rgb = {red:255, green: 255, blue: 255};
 
     window.onload = function() {
       // We connect to the device defined in the robot
@@ -30,44 +50,36 @@
 
       robot.on('button_up', function(){
         $('#status-Button').html('I Am OFF');
-        console.log('The robot just turned ON its led!!!');
       });
 
       //Touch Sensor Press
       robot.on('touch_down', function(){
         $('#status-Touch').html('I Am Touched');
-        console.log('The robot just turned ON its led!!!');
       });
 
       robot.on('touch_up', function(){
         $('#status-Touch').html('I Am NOT Touched');
-        console.log('The robot just turned ON its led!!!');
       });
 
       //Rotary Sensor
       robot.on('rotary_reading', function(data){
         $('#status-Rotary').html($('<li>').text(data));
-        //console.log('ROTATE!!!');
       });
-
 
       //Sound Sensor
       robot.on('sound_reading', function(data){
         $('#status-Sound').html($('<li>').text(data));
-        //console.log('ROTATE!!!');
       });
 
       //Temp Sensor
       robot.on('temp_reading', function(data){
         $('#status-Temp').html($('<li>').text(data));
-        //console.log('ROTATE!!!');
       });
 
       //Light Sensor
       robot.on('light_reading', function(data){
         $('#status-Light').html($('<li>').text(data));
       });
-
 
       //LED Update
       robot.on('led_is_on', function(){
@@ -119,6 +131,26 @@
       //LCD Update
       robot.on('current_text', function(msg){
           $('#current-Text').html(msg);
+      });
+
+      //LCD Backlight Color Update
+      robot.on('screen_rgb', function(rgb){
+          $('#screen-Red').val(rgb.red);
+          $('#screen-Green').val(rgb.green);
+          $('#screen-Blue').val(rgb.blue);
+      });
+
+      //Backlight Status Update
+      robot.on('backlight_on', function(){
+          $('#button-Backlight').html('Turn Backlight Off');
+          $('#button-Backlight').addClass('status-on');
+          $('#button-Backlight').removeClass('status-off');
+      });
+
+      robot.on('backlight_off', function(){
+          $('#button-Backlight').html('Turn Backlight On');
+          $('#button-Backlight').addClass('status-off');
+          $('#button-Backlight').removeClass('status-on');
       });
 
 
@@ -201,12 +233,10 @@
 
       });
 
-
       //Servo
       $('#servo').on("change", function(){
-          robot.emit('servo_move', $('#servo').val());
+          robot.emit('servo_move', Number($('#servo').val()));
       });
-
 
       //LCD
       $('form').submit(function(){
@@ -215,7 +245,39 @@
       $('#screen').val('');
       });
 
+      //LCD Backlight Toggle 
+      $('#button-Backlight').on("click", function(){
 
+        if ( $(this).hasClass("status-off") ) {
+          $(this).html('Turn Backlight Off');
+          $(this).addClass('status-on');
+          $(this).removeClass('status-off');
+          robot.emit('backlight_on');
+        }
+        else {
+          $(this).html('Turn Backlight On');
+          $(this).addClass('status-off');
+          $(this).removeClass('status-on');
+          robot.emit('backlight_off');
+        }
+
+      });
+
+      //Change LCD Backlight Color
+      $('#screen-Red').on("change", function(){
+          lcd_rgb.red = parseInt($('#screen-Red').val());
+          robot.emit('screen_rgb', lcd_rgb);
+      });
+
+      $('#screen-Green').on("change", function(){
+          lcd_rgb.green = parseInt($('#screen-Green').val());
+          robot.emit('screen_rgb', lcd_rgb);
+      });
+
+      $('#screen-Blue').on("change", function(){
+          lcd_rgb.blue = parseInt($('#screen-Blue').val());
+          robot.emit('screen_rgb', lcd_rgb);
+      });
 
     };
   </script>
@@ -241,6 +303,13 @@
     <form action="">
       <input id="screen" autocomplete="off" /><button>Send</button>
     </form>
+
+    <ul>
+      <li>R: <input id="screen-Red" type="range"  min="0" max="255" /></li>
+      <li>G: <input id="screen-Green" type="range"  min="0" max="255" /></li>
+      <li>B: <input id="screen-Blue" type="range"  min="0" max="255" /></li>
+      <li><a href="#" id="button-Backlight" class="status-on">Turn Screen Off</a></li>
+    </ul>
 
   </body>
 </html>
