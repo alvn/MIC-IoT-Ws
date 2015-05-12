@@ -100,8 +100,8 @@
 
       robot.on('relay_is_off', function(){
           $('#button-Relay').html('Turn Relay On');
-          $('#button-Relay').addClass('status-on');
-          $('#button-Relay').removeClass('status-off');
+          $('#button-Relay').addClass('status-off');
+          $('#button-Relay').removeClass('status-on');
       });
 
       //Buzzer Update
@@ -113,8 +113,8 @@
 
       robot.on('buzzer_is_off', function(){
           $('#button-Buzzer').html('Turn Buzzer On');
-          $('#button-Buzzer').addClass('status-on');
-          $('#button-Buzzer').removeClass('status-off');
+          $('#button-Buzzer').addClass('status-off');
+          $('#button-Buzzer').removeClass('status-on');
       });
 
 
@@ -157,11 +157,6 @@
       });
 
       //Relay
-      $('#servo').on("change", function(){
-          robot.emit('servo_move', $('#servo').val());
-      });
-
-      //Servo
       $('#button-Relay').on("click", function(){
 
         if ( $(this).hasClass("status-off") ) {
@@ -178,6 +173,14 @@
         }
 
       });
+
+
+      //Servo
+      $('#servo').on("change", function(){
+          robot.emit('servo_move', $('#servo').val());
+      });
+
+      
       //Status Checks
 
 

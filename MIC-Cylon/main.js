@@ -72,6 +72,11 @@ Cylon.robot({
       this.emit('touch_up');
     }.bind(this));
       
+    /*//Servo
+    this.on('servo_move', function(angle) {
+       this.servo.angle(angle);
+    }.bind(this));*/
+      
     //ANALOG INPUTS
       
     //rotary
@@ -160,10 +165,10 @@ Cylon.robot({
  },
     
  servoMove: function(angle) {
-     if (angle >= 0 && angle <= 135 ) {
-        this.servo.angle(angle);
-        this.emit('servo_angle', servo.angle);
-    }
+     //if (angle >= 0 && angle <= 135 ) {
+        //this.servo.angle(angle);
+        //this.emit('servo_angle', servo.angle);
+    //}
  },
     
  //Button Functions
