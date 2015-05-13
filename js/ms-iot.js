@@ -158,8 +158,8 @@
           $(this).html('Turn LED On');
           $(this).addClass('status-off');
           $(this).removeClass('status-on');
-          robot.emit('led_off');
           robot.emit('led_brightness', Number(0));
+          robot.emit('led_off');
         }
 
       });
@@ -187,8 +187,9 @@
           $(this).html('Turn Buzzer On');
           $(this).addClass('status-off');
           $(this).removeClass('status-on');
-          robot.emit('buzzer_off');
           robot.emit('buzzer_level', Number(0));
+          robot.emit('buzzer_off');
+
 
         }
 
