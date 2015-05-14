@@ -149,15 +149,15 @@
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn LED Off');
-          $(this).addClass('status-on');
-          $(this).removeClass('status-off');
+          $(this).addClass('status-on btn-success');
+          $(this).removeClass('status-off btn-default');
           robot.emit('led_on');
           robot.emit('led_brightness', currentBrightness);
         }
         else if ( $(this).hasClass("status-on") ){
           $(this).html('Turn LED On');
-          $(this).addClass('status-off');
-          $(this).removeClass('status-on');
+          $(this).addClass('status-off btn-default');
+          $(this).removeClass('status-on btn-success');
           robot.emit('led_brightness', Number(0));
           robot.emit('led_off');
         }
@@ -178,15 +178,15 @@
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn Buzzer Off');
-          $(this).addClass('status-on');
-          $(this).removeClass('status-off');
+          $(this).addClass('status-on btn-success');
+          $(this).removeClass('status-off btn-default');
           robot.emit('buzzer_on');
           robot.emit('buzzer_level', currentlevel);
         }
         else {
           $(this).html('Turn Buzzer On');
-          $(this).addClass('status-off');
-          $(this).removeClass('status-on');
+          $(this).addClass('status-off btn-default');
+          $(this).removeClass('status-on btn-success');
           robot.emit('buzzer_level', Number(0));
           robot.emit('buzzer_off');
 
@@ -207,14 +207,14 @@
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn Relay Off');
-          $(this).addClass('status-on');
-          $(this).removeClass('status-off');
+          $(this).addClass('status-on btn-success');
+          $(this).removeClass('status-off btn-default');
           robot.emit('relay_on');
         }
         else {
           $(this).html('Turn Relay On');
-          $(this).addClass('status-off');
-          $(this).removeClass('status-on');
+          $(this).addClass('status-off btn-default');
+          $(this).removeClass('status-on btn-success');
           robot.emit('relay_off');
         }
 
@@ -237,14 +237,14 @@
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn Backlight Off');
-          $(this).addClass('status-on');
-          $(this).removeClass('status-off');
+          $(this).addClass('status-on btn-success');
+          $(this).removeClass('status-off btn-default');
           robot.emit('backlight_on');
         }
         else {
           $(this).html('Turn Backlight On');
-          $(this).addClass('status-off');
-          $(this).removeClass('status-on');
+          $(this).addClass('status-off btn-default');
+          $(this).removeClass('status-on btn-success');
           robot.emit('backlight_off');
         }
 
