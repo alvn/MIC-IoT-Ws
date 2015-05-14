@@ -49,22 +49,22 @@
 
       //Rotary Sensor
       robot.on('rotary_reading', function(data){
-        $('#status-Rotary').html($('<li>').text(data));
+        $('#status-Rotary').html($('<h2>').text(data));
       });
 
       //Sound Sensor
       robot.on('sound_reading', function(data){
-        $('#status-Sound').html($('<li>').text(data));
+        $('#status-Sound').html($('<h2>').text(data));
       });
 
       //Temp Sensor
       robot.on('temp_reading', function(data){
-        $('#status-Temp').html($('<li>').text(data));
+        $('#status-Temp').html($('<h2>').text(data));
       });
 
       //Light Sensor
       robot.on('light_reading', function(data){
-        $('#status-Light').html($('<li>').text(data));
+        $('#status-Light').html($('<h2>').text(data));
       });
 
       //LED Update
