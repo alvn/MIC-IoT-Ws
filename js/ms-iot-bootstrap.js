@@ -32,91 +32,108 @@
       //Button Press
       robot.on('button_down', function(){
         $('#status-Button').html('I Am ON');
+        button = true;
       });
 
       robot.on('button_up', function(){
         $('#status-Button').html('I Am OFF');
+        button = false;
       });
 
       //Touch Sensor Press
       robot.on('touch_down', function(){
         $('#status-Touch').html('I Am Touched');
+        touch = true;
       });
 
       robot.on('touch_up', function(){
         $('#status-Touch').html('I Am NOT Touched');
+        touch = false;
       });
 
       //Rotary Sensor
       robot.on('rotary_reading', function(data){
         $('#status-Rotary').html($('<h2>').text(data));
+        rotary = data;
       });
 
       //Sound Sensor
       robot.on('sound_reading', function(data){
         $('#status-Sound').html($('<h2>').text(data));
+        sound = data;
       });
 
       //Temp Sensor
       robot.on('temp_reading', function(data){
         $('#status-Temp').html($('<h2>').text(data));
+        temp = data;
       });
 
       //Light Sensor
       robot.on('light_reading', function(data){
         $('#status-Light').html($('<h2>').text(data));
+        light = data;
       });
 
       //LED Update
       robot.on('led_is_on', function(){
           $('#button-LED').html('Turn LED Off');
-          $('#button-LED').addClass('status-on');
+          $('#button-LED').addClass('status-on btn-success');
           $('#button-LED').removeClass('status-off');
+          led = true;
       });
 
       robot.on('led_is_off', function(){
           $('#button-LED').html('Turn LED On');
-          $('#button-LED').addClass('status-off');
+          $('#button-LED').addClass('status-off btn-default');
           $('#button-LED').removeClass('status-on');
+          led = false;
       });
 
       robot.on('led_current_brightness', function(level){
           $('#level-LED').val(level);
+          led_brightness = level;
       });
 
       //Relay Update
       robot.on('relay_is_on', function(){
           $('#button-Relay').html('Turn Relay Off');
-          $('#button-Relay').addClass('status-on');
+          $('#button-Relay').addClass('status-on btn-success');
           $('#button-Relay').removeClass('status-off');
+          relay = true;
       });
 
       robot.on('relay_is_off', function(){
           $('#button-Relay').html('Turn Relay On');
-          $('#button-Relay').addClass('status-off');
+          $('#button-Relay').addClass('status-off btn-default');
           $('#button-Relay').removeClass('status-on');
+          relay = false;
       });
 
       //Buzzer Update
       robot.on('buzzer_is_on', function(){
           $('#button-Buzzer').html('Turn Buzzer Off');
-          $('#button-Buzzer').addClass('status-on');
+          $('#button-Buzzer').addClass('status-on btn-success');
           $('#button-Buzzer').removeClass('status-off');
+          buzzer = true;
       });
 
       robot.on('buzzer_is_off', function(){
           $('#button-Buzzer').html('Turn Buzzer On');
-          $('#button-Buzzer').addClass('status-off');
+          $('#button-Buzzer').addClass('status-off btn-default');
           $('#button-Buzzer').removeClass('status-on');
+          buzzer = false;
       });
 
       robot.on('buzzer_current_level', function(level){
           $('#level-Buzzer').val(level);
+          buzzer_level = level;
       });
 
       //LCD Update
       robot.on('current_text', function(msg){
           $('#current-Text').html(msg);
+          lcd_text = msg;
       });
 
       //LCD Backlight Color Update
@@ -129,14 +146,16 @@
       //Backlight Status Update
       robot.on('backlight_on', function(){
           $('#button-Backlight').html('Turn Backlight Off');
-          $('#button-Backlight').addClass('status-on');
+          $('#button-Backlight').addClass('status-on btn-success');
           $('#button-Backlight').removeClass('status-off');
+          lcd = true;
       });
 
       robot.on('backlight_off', function(){
           $('#button-Backlight').html('Turn Backlight On');
-          $('#button-Backlight').addClass('status-off');
+          $('#button-Backlight').addClass('status-off btn-default');
           $('#button-Backlight').removeClass('status-on');
+          lcd = false;
       });
 
 
