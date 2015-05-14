@@ -45,7 +45,7 @@
                 <h3 class="panel-title">Push Button</h3>
               </div>
               <div class="panel-body">
-                 <h2><span id="status-Button" class="label label-default">I Am Off</span></h2>
+                 <h2><span id="status-Button" class="label label-default">BUTTON OFF</span></h2>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
                 <h3 class="panel-title">Touch Button</h3>
               </div>
               <div class="panel-body">
-                  <h2><span id="status-Touch" class="label label-default">I Am Not Touched</span></h2>
+                  <h2><span id="status-Touch" class="label label-default">NOT Touched</span></h2>
               </div>
             </div>
           </div>
@@ -140,8 +140,6 @@
               </div>
               <div class="panel-body">
                 <button type="button" id="button-LED" class="btn btn-lg btn-default status-off">Turn LED On</button>
-                <h4>LED Brightness:</h4>
-                <input id="level-LED" type="range"  min="0" max="255" />
               </div>
             </div>
           </div>
@@ -155,8 +153,6 @@
               </div>
               <div class="panel-body">
                 <button type="button" id="button-Buzzer" class="btn btn-lg btn-default status-off">Turn Buzzer On</button>
-                <h4>Buzzer Level:</h4>
-                <input id="level-Buzzer"type="range"  min="0" max="255" />
               </div>
             </div>
           </div>
@@ -217,9 +213,28 @@
             </div>
           </div>
 
-          <!-- LCD Settings Panel
+          <!-- Servo  Panel
           ================================================== -->
           <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Servo Control</h3>
+              </div>
+              <div class="panel-body">
+                <button type="button" id="button-Servo" class="btn btn-lg btn-default status-off">Move Forward</button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- End Row -->
+
+    <!-- Begin Row 4
+    ================================================== -->
+      <div class="row">
+
+          <!-- LCD Settings Panel
+          ================================================== -->
+            <div class="col-sm-4">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">LCD Settings</h3>
@@ -236,9 +251,6 @@
           </div>
 
         </div><!-- End Row -->
-
-
-
 
     </div><!--END container-->
 

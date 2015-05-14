@@ -31,23 +31,31 @@
 
       //Button Press
       robot.on('button_down', function(){
-        $('#status-Button').html('I Am ON');
+        $('#status-Button').html('BUTTON ON');
+        $('#status-Button').addClass('label-success');
+        $('#status-Button').removeClass('label-default');
         button = true;
       });
 
       robot.on('button_up', function(){
-        $('#status-Button').html('I Am OFF');
+        $('#status-Button').html('BUTTON OFF');
+        $('#status-Button').removeClass('label-success');
+        $('#status-Button').addClass('label-default');
         button = false;
       });
 
       //Touch Sensor Press
       robot.on('touch_down', function(){
-        $('#status-Touch').html('I Am Touched');
+        $('#status-Touch').html('Touched');
+        $('#status-Touch').addClass('label-success');
+        $('#status-Touch').removeClass('label-default');
         touch = true;
       });
 
       robot.on('touch_up', function(){
-        $('#status-Touch').html('I Am NOT Touched');
+        $('#status-Touch').html('NOT Touched');
+        $('#status-Touch').removeClass('label-success');
+        $('#status-Touch').addClass('label-default');
         touch = false;
       });
 
@@ -90,10 +98,12 @@
           led = false;
       });
 
+      /*
       robot.on('led_current_brightness', function(level){
           $('#level-LED').val(level);
           led_brightness = level;
       });
+      */
 
       //Relay Update
       robot.on('relay_is_on', function(){
@@ -125,9 +135,24 @@
           buzzer = false;
       });
 
-      robot.on('buzzer_current_level', function(level){
+      /*robot.on('buzzer_current_level', function(level){
           $('#level-Buzzer').val(level);
           buzzer_level = level;
+      });*/
+
+      //Servo Update
+      robot.on('servo_is_forward', function(){
+          $('#button-Servo').html('Move Backward');
+          $('#button-Servo').addClass('status-on btn-success');
+          $('#button-Servo').removeClass('status-off');
+          led = true;
+      });
+
+      robot.on('servo_is_backward', function(){
+          $('#button-Servo').html('Move Forward');
+          $('#button-Servo').addClass('status-off btn-default');
+          $('#button-Servo').removeClass('status-on');
+          led = false;
       });
 
       //LCD Update
@@ -171,24 +196,23 @@
           $(this).addClass('status-on btn-success');
           $(this).removeClass('status-off btn-default');
           robot.emit('led_on');
-          robot.emit('led_brightness', currentBrightness);
         }
+
         else if ( $(this).hasClass("status-on") ){
           $(this).html('Turn LED On');
           $(this).addClass('status-off btn-default');
           $(this).removeClass('status-on btn-success');
-          robot.emit('led_brightness', Number(0));
           robot.emit('led_off');
         }
 
       });
 
-      //set led brightness level
+      /*//set led brightness level
       $('#level-LED').on("change", function() {
         if ( $('#button-LED').hasClass("status-on") ) {
           robot.emit('led_brightness', Number($('#level-LED').val()));
         }
-      });
+      });*/
 
       //Buzzer
       $('#button-Buzzer').on("click", function(){
@@ -200,27 +224,28 @@
           $(this).addClass('status-on btn-success');
           $(this).removeClass('status-off btn-default');
           robot.emit('buzzer_on');
-          robot.emit('buzzer_level', currentlevel);
         }
         else {
           $(this).html('Turn Buzzer On');
           $(this).addClass('status-off btn-default');
           $(this).removeClass('status-on btn-success');
-          robot.emit('buzzer_level', Number(0));
           robot.emit('buzzer_off');
 
-
         }
 
       });
-
+/*
       //set buzzer level
       $('#level-Buzzer').on("change", function() {
-        if ( $('#button-LED').hasClass("status-on") ) {
+        if ( $('#button-Buzzer').hasClass("status-on") ) {
           robot.emit('buzzer_level', Number($('#level-Buzzer').val()));
         }
+        else {
+          //robot.emit('buzzer_level', 0);
+          robot.emit('buzzer_off');
+        }
       });
-
+*/
       //Relay
       $('#button-Relay').on("click", function(){
 
@@ -239,9 +264,22 @@
 
       });
 
-      //Servo
-      $('#servo').on("change", function(){
-          robot.emit('servo_move', Number($('#servo').val()));
+      //Servo Toggle
+      $('#button-Servo').on("click", function(){
+
+        if ( $(this).hasClass("status-off") ) {
+          $(this).html('Move Backward');
+          $(this).addClass('status-on btn-success');
+          $(this).removeClass('status-off btn-default');
+          robot.emit('servo_forward');
+        }
+        else {
+          $(this).html('Move Forward');
+          $(this).addClass('status-off btn-default');
+          $(this).removeClass('status-on btn-success');
+          robot.emit('servo_backward');
+        }
+
       });
 
       //LCD

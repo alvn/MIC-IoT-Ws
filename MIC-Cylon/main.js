@@ -7,13 +7,14 @@ var Cylon = require('cylon');
 var currentText = '';     //defining as global var here.
 var backlightStatus = true; 
 var lcd_rgb = {red:255, green: 255, blue: 255};
+var servoAngle = 0; 
 
 Cylon.robot({
   name: 'peanut-bot',
     
   // This is how we define custom events that will be registered
   // by the API.
-  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'current_text', 'screen_power', 'screen_rgb'],
+  events: ['button_down', 'button_up', 'touch_down', 'touch_up', 'rotary_reading','sound_reading', 'light_reading', 'temp_reading','led_is_on', 'led_is_off', 'led_current_brightness', 'buzzer_is_on', 'buzzer_is_off', 'buzzer_current_level', 'relay_is_on', 'relay_is_off', 'current_text', 'screen_power', 'screen_rgb', 'servo_is_forward', 'servo_is_backward'],
     
   // These are the commands that will be availble in the API
   // Commands method needs to return an object with the aliases
@@ -34,7 +35,8 @@ Cylon.robot({
       screen_rgb: this.screenRGB,
       backlight_off: this.backlightOff,
       backlight_on: this.backlightOn,
-      servo_move: this.servoMove,
+      servo_forward: this.servoForward,
+      servo_backward: this.servoBackward,
       status_check: this.statusCheck
     };
   },
@@ -60,7 +62,13 @@ Cylon.robot({
 
   work: function() {
     // Add your robot code here,
-          
+      
+    //Resets        
+    this.led.turnOff();
+    this.buzzer.turnOff();
+    this.servo.angle(0);
+
+      
     //buttons
     this.button.on('push', function() {
       console.log('detected press');
@@ -82,11 +90,6 @@ Cylon.robot({
       this.emit('touch_up');
     }.bind(this));
       
-    //Servo
-    var servoAngle = 0;
-    this.servo.on('angle', function(angle) {
-       this.emit('servo_angle', this.servo.currentAngle);
-    }.bind(this));
       
     //ANALOG INPUTS
       
@@ -140,6 +143,7 @@ Cylon.robot({
       this.emit('light_reading', lightVal);
      }.bind(this));
       
+      
   },
   
   //COMMAND METHODS
@@ -159,6 +163,7 @@ Cylon.robot({
     var level = Number(level);
     this.led.brightness(level);
     this.emit('led_current_brightness', this.led.currentBrightness());
+    return;
   },
     
  //Buzzer Methods
@@ -173,8 +178,10 @@ Cylon.robot({
  },
  
  buzzerLevel: function(level) {
+     var level = Number(level);
      this.buzzer.speed(level);
      this.emit('buzzer_current_level', this.buzzer.currentSpeed());
+     return;
  },
     
  //Relay Methods
@@ -226,14 +233,17 @@ Cylon.robot({
   backlightStatus = true;
  },
  
- //Servo Method
- servoMove: function() {
-     //if (angle >= 0 && angle <= 135 ) {
-     var angle = 100;   
-     this.servo.angle(angle);
-        //this.emit('servo_angle', servo.angle);
-    //}
+ //Servo Methods
+ servoForward: function() {
+     this.servo.angle(135);
+     this.emit('servo_is_forward');
+ }, 
+
+ servoBackward: function() {
+     this.servo.angle(0);
+     this.emit('servo_is_backward');
  },
+    
 
 //Status Check on Connection
  statusCheck: function() {
@@ -267,6 +277,13 @@ Cylon.robot({
           this.emit('touch_down');
       } else {
           this.emit('touch_up');
+      }
+     
+     //Servo status
+      if (this.servo.angle >= 179) {
+          this.emit('servo_is_on');
+      } else {
+          this.emit('servo_is_off');
       }
      
      //LCD Text Update
