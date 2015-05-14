@@ -21,7 +21,7 @@
 
     window.onload = function() {
       // We connect to the device defined in the robot
-      robot = io('http://burrito.local:3000/api/robots/peanut-bot');
+      robot = io('http://dev25.local:3000/api/robots/micbot');
       //servo = io('http://192.168.1.176:3000/api/robots/peanut-bot/devices/sensor');
 
       //set initial status

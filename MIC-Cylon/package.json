@@ -1,12 +1,14 @@
 {
   "name": "MIC-App",
-  "description": "",
+  "description": "A Make It Creative tool for IoT",
   "version": "0.0.1",
+  "license" : "MIT",
   "main": "main.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "dependencies": {
+      "cylon": "*",
       "cylon-intel-iot": "*",
       "cylon-gpio": "*",
       "cylon-i2c": "*",

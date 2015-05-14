@@ -10,7 +10,7 @@ var lcd_rgb = {red:255, green: 255, blue: 255};
 var servoAngle = 0; 
 
 Cylon.robot({
-  name: 'peanut-bot',
+  name: 'micbot',
     
   // This is how we define custom events that will be registered
   // by the API.
