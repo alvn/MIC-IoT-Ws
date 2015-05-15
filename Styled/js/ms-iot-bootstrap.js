@@ -21,7 +21,7 @@
 
     window.onload = function() {
       // We connect to the device defined in the robot
-      robot = io('http://dev18.local:3000/api/robots/micbot');
+      robot = io('http://burrito.local:3000/api/robots/micbot');
 
       //set initial status
       robot.emit('status_check');
@@ -157,7 +157,7 @@
       //LCD Update
       robot.on('current_text', function(msg){
           $('#current-Text').html(msg);
-          lcd_text = msg;
+          //lcd_text = msg;
       });
 
       //LCD Backlight Color Update

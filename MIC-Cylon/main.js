@@ -202,7 +202,7 @@ Cylon.robot({
   this.emit('current_text', msg);
   currentText = msg;
  },
-
+ 
  screenLine: function(line) {
   this.screen.setCursor(line,0);
  },

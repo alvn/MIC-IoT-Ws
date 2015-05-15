@@ -21,7 +21,7 @@
 
     window.onload = function() {
       // We connect to the device defined in the robot
-      robot = io('http://dev18.local:3000/api/robots/microbot');
+      robot = io('http://burrito.local:3000/api/robots/microbot');
 
       //set initial status
       robot.emit('status_check');
@@ -190,8 +190,6 @@
           $(this).addClass('status-off');
           $(this).removeClass('status-on');
           robot.emit('buzzer_off');
-
-
         }
 
       });
