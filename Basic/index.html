@@ -9,10 +9,6 @@
 
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
-
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-
   </head>
   
   <body>
@@ -22,6 +18,7 @@
       <li><a href="#" id="button-Buzzer" class="status-off">Turn Buzzer On</a></li>
       <li><input id="level-Buzzer"type="range"  min="0" max="255" /></li>
       <li><a href="#" id="button-Relay" class="status-off">Turn Relay On</a></li>
+      <li><a href="#" id="button-Servo" class="status-off">Move Servo Forward</a></li>
     </ul>
 
     <ul id="status">
@@ -45,9 +42,12 @@
       <li><a href="#" id="button-Backlight" class="status-on">Turn Screen Off</a></li>
     </ul>
 
-
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script type ="text/javascript" src ="js/ms-iot.js"></script>
 
+  <!-- Your Custom JavaScript
+  ================================================== -->
   <script type="text/javascript">
   //Your Script Here:  
    
