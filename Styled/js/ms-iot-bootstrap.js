@@ -282,7 +282,15 @@
       });
 
       //LCD
-      $('form').submit(function(){
+      $('form').submit(function(e){
+
+        robot.emit('screen_clear');
+        robot.emit('screen_write', $('#screen').val());
+      $('#screen').val('');
+      return false;
+      });
+
+      $('#submit-btn').on("click", function(){
         robot.emit('screen_clear');
         robot.emit('screen_write', $('#screen').val());
       $('#screen').val('');

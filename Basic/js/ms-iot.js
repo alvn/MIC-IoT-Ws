@@ -21,7 +21,8 @@
 
     window.onload = function() {
       // We connect to the device defined in the robot
-      robot = io('http://burrito.local:3000/api/robots/microbot');
+      robot = io('http://burrito.local:3000/api/robots/micbot');
+      //servo = io('http://192.168.1.176:3000/api/robots/peanut-bot/devices/sensor');
 
       //set initial status
       robot.emit('status_check');
@@ -31,47 +32,39 @@
       //Button Press
       robot.on('button_down', function(){
         $('#status-Button').html('I Am ON');
-        button = true;
       });
 
       robot.on('button_up', function(){
         $('#status-Button').html('I Am OFF');
-        button = false;
       });
 
       //Touch Sensor Press
       robot.on('touch_down', function(){
         $('#status-Touch').html('I Am Touched');
-        touch = true;
       });
 
       robot.on('touch_up', function(){
         $('#status-Touch').html('I Am NOT Touched');
-        touch = false;
       });
 
       //Rotary Sensor
       robot.on('rotary_reading', function(data){
         $('#status-Rotary').html($('<li>').text(data));
-        rotary = data;
       });
 
       //Sound Sensor
       robot.on('sound_reading', function(data){
         $('#status-Sound').html($('<li>').text(data));
-        sound = data;
       });
 
       //Temp Sensor
       robot.on('temp_reading', function(data){
         $('#status-Temp').html($('<li>').text(data));
-        temp = data;
       });
 
       //Light Sensor
       robot.on('light_reading', function(data){
         $('#status-Light').html($('<li>').text(data));
-        light = data;
       });
 
       //LED Update
@@ -79,30 +72,25 @@
           $('#button-LED').html('Turn LED Off');
           $('#button-LED').addClass('status-on');
           $('#button-LED').removeClass('status-off');
-          led = true;
       });
 
       robot.on('led_is_off', function(){
           $('#button-LED').html('Turn LED On');
           $('#button-LED').addClass('status-off');
           $('#button-LED').removeClass('status-on');
-          led = false;
       });
-
 
       //Relay Update
       robot.on('relay_is_on', function(){
           $('#button-Relay').html('Turn Relay Off');
           $('#button-Relay').addClass('status-on');
           $('#button-Relay').removeClass('status-off');
-          relay = true;
       });
 
       robot.on('relay_is_off', function(){
           $('#button-Relay').html('Turn Relay On');
           $('#button-Relay').addClass('status-off');
           $('#button-Relay').removeClass('status-on');
-          relay = false;
       });
 
       //Buzzer Update
@@ -110,21 +98,17 @@
           $('#button-Buzzer').html('Turn Buzzer Off');
           $('#button-Buzzer').addClass('status-on');
           $('#button-Buzzer').removeClass('status-off');
-          buzzer = true;
       });
 
       robot.on('buzzer_is_off', function(){
           $('#button-Buzzer').html('Turn Buzzer On');
           $('#button-Buzzer').addClass('status-off');
           $('#button-Buzzer').removeClass('status-on');
-          buzzer = false;
       });
-
 
       //LCD Update
       robot.on('current_text', function(msg){
           $('#current-Text').html(msg);
-          lcd_text = msg;
       });
 
       //LCD Backlight Color Update
@@ -132,7 +116,6 @@
           $('#screen-Red').val(rgb.red);
           $('#screen-Green').val(rgb.green);
           $('#screen-Blue').val(rgb.blue);
-          //lcd_rgb: {rgb.red, rgb,green, rgb.blue};
       });
 
       //Backlight Status Update
@@ -140,14 +123,12 @@
           $('#button-Backlight').html('Turn Backlight Off');
           $('#button-Backlight').addClass('status-on');
           $('#button-Backlight').removeClass('status-off');
-          lcd = true;
       });
 
       robot.on('backlight_off', function(){
           $('#button-Backlight').html('Turn Backlight On');
           $('#button-Backlight').addClass('status-off');
           $('#button-Backlight').removeClass('status-on');
-          lcd = false;
       });
 
 
@@ -156,7 +137,6 @@
       //LED
       $('#button-LED').on("click", function(){
 
-      var currentBrightness = Number($('#level-LED').val());
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn LED Off');
@@ -173,11 +153,15 @@
 
       });
 
-   
+      //set led brightness level
+      $('#level-LED').on("change", function() {
+        if ( $('#button-LED').hasClass("status-on") ) {
+        }
+      });
+
       //Buzzer
       $('#button-Buzzer').on("click", function(){
         
-        var currentlevel = Number($('#level-Buzzer').val());
 
         if ( $(this).hasClass("status-off") ) {
           $(this).html('Turn Buzzer Off');
@@ -190,11 +174,13 @@
           $(this).addClass('status-off');
           $(this).removeClass('status-on');
           robot.emit('buzzer_off');
+
+
         }
 
       });
 
-     
+
       //Relay
       $('#button-Relay').on("click", function(){
 
@@ -212,7 +198,6 @@
         }
 
       });
-
 
       //Servo Toggle
       $('#button-Servo').on("click", function(){
@@ -233,10 +218,18 @@
       });
 
       //LCD
-      $('form').submit(function(){
+      $('form').submit(function(e){
         robot.emit('screen_clear');
         robot.emit('screen_write', $('#screen').val());
       $('#screen').val('');
+      return false;
+      });
+
+      $('#submit-btn').on("click", function(){
+        robot.emit('screen_clear');
+        robot.emit('screen_write', $('#screen').val());
+      $('#screen').val('');
+      return false;
       });
 
       //LCD Backlight Toggle 

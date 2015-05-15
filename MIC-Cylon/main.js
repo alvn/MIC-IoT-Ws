@@ -202,7 +202,7 @@ Cylon.robot({
   this.emit('current_text', msg);
   currentText = msg;
  },
- 
+
  screenLine: function(line) {
   this.screen.setCursor(line,0);
  },
@@ -309,7 +309,7 @@ Cylon.api(
   'socketio',
   {
   host: '0.0.0.0',
-  port: '3000' 
+  port: '3000'
 });
 
 Cylon.start();

@@ -9,14 +9,15 @@
 
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   </head>
   
   <body>
     <ul id="outputs">
       <li><a href="#" id="button-LED" class="status-off">Turn LED On</a></li>
-      <li><input id="level-LED" type="range"  min="0" max="255" /></li>
       <li><a href="#" id="button-Buzzer" class="status-off">Turn Buzzer On</a></li>
-      <li><input id="level-Buzzer"type="range"  min="0" max="255" /></li>
       <li><a href="#" id="button-Relay" class="status-off">Turn Relay On</a></li>
       <li><a href="#" id="button-Servo" class="status-off">Move Servo Forward</a></li>
     </ul>
@@ -31,8 +32,8 @@
     </ul>
 
     <h3 id="current-Text">Current Text</h3>
-    <form action="">
-      <input id="screen" autocomplete="off" /><button>Send</button>
+    <form>
+      <input id="screen" autocomplete="off" /><button id="submit-btn">Send</button>
     </form>
 
     <ul>
@@ -42,8 +43,6 @@
       <li><a href="#" id="button-Backlight" class="status-on">Turn Screen Off</a></li>
     </ul>
 
-  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script type ="text/javascript" src ="js/ms-iot.js"></script>
 
   <!-- Your Custom JavaScript
