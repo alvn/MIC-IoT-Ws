@@ -21,7 +21,7 @@
 
     window.onload = function() {
       // We connect to the device defined in the robot
-      robot = io('http://burrito.local:3000/api/robots/micbot');
+      robot = io('http://dev03.local:3000/api/robots/micbot');
 
       //set initial status
       robot.emit('status_check');
