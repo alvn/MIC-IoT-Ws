@@ -1,5 +1,6 @@
  //Global Vars
     var device;
+    var robot;
 
     //Global Input Vars
     var button = false;
@@ -19,9 +20,14 @@
     var lcd_text = '';
     var lcd_rgb = {red:255, green: 255, blue: 255};
 
-    window.onload = function() {
+    $("#connect-btn").on("click",function(){
+     var url = $("#device-url").val();
+     boot(url);
+    });
+
+     var boot = function(url) {
       // We connect to the device defined in the robot
-      robot = io('http://dev03.local:3000/api/robots/micbot');
+      robot = io('http://'+url+':3000/api/robots/micbot');
 
       //set initial status
       robot.emit('status_check');
