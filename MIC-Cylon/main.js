@@ -1,5 +1,6 @@
 'use strict';
 
+
 // We require cylon and define our robot as usual
 var Cylon = require('cylon');
 
@@ -63,11 +64,13 @@ Cylon.robot({
   work: function() {
     // Add your robot code here,
       
-    //Resets        
+    //Resets  
+      
     this.led.turnOff();
     this.buzzer.turnOff();
     this.servo.angle(0);
-
+  this.screen.setCursor(0,0);
+  this.screen.write("Ready");
       
     //buttons
     this.button.on('push', function() {
